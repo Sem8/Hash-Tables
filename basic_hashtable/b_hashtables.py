@@ -57,14 +57,19 @@ def hash_table_remove(hash_table, key):
     index = hash(key, hash_table.capacity)
     node = hash_table.storage[index]
     prev = None
-
     while node is not None and node.key != key:
         prev = node
         node = node.next
-    
-
-
-    
+    if node is None:
+        return None
+    else:
+        hash_table.size -= 1
+        result = node.value
+        if prev is None:
+            hash_table.storage[index] = node.next
+        else:
+            prev.next = prev.next.next
+        return result  
 
 
 # '''
