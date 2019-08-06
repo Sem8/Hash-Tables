@@ -53,23 +53,31 @@ def hash_table_insert(hash_table, key, value):
 
 # If you try to remove a value that isn't there, print a warning.
 # '''
+# def hash_table_remove(hash_table, key):
+#     index = hash(key, hash_table.capacity)
+#     node = hash_table.storage[index]
+#     prev = None
+#     while node is not None and node.key != key:
+#         prev = node
+#         node = node.next
+#     if node is None:
+#         return None
+#     else:
+#         hash_table.size -= 1
+#         result = node.value
+#         if prev is None:
+#             hash_table.storage[index] = node.next
+#         else:
+#             prev.next = prev.next.next
+#         return result
+
 def hash_table_remove(hash_table, key):
     index = hash(key, hash_table.capacity)
-    node = hash_table.storage[index]
-    prev = None
-    while node is not None and node.key != key:
-        prev = node
-        node = node.next
-    if node is None:
-        return None
+
+    if hash_table.storage[index] is None or hash_table.storage[index].key != key:
+        print(f'value for {key} does not exist')
     else:
-        hash_table.size -= 1
-        result = node.value
-        if prev is None:
-            hash_table.storage[index] = node.next
-        else:
-            prev.next = prev.next.next
-        return result  
+        hash_table.storage[index] = None
 
 
 # '''
@@ -77,16 +85,24 @@ def hash_table_remove(hash_table, key):
 
 # Should return None if the key is not found.
 # '''
+# def hash_table_retrieve(hash_table, key):
+#     index = hash(key, hash_table.capacity)
+#     node = hash_table.storage[index]
+
+#     while node is not None and node.key != key:
+#         node = node.next
+#     if node is None:
+#         return None
+#     else:
+#         return node.value
+
 def hash_table_retrieve(hash_table, key):
     index = hash(key, hash_table.capacity)
-    node = hash_table.storage[index]
-
-    while node is not None and node.key != key:
-        node = node.next
-    if node is None:
-        return None
-    else:
-        return node.value
+    if hash_table.storage[index] is not None:
+        if hash_table.storage[index].key == key:
+            return hash_table.storage[index].value
+    print(f'value with this {key} does not exist')
+    return None
         
     
 
