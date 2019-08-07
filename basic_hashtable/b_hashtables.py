@@ -1,5 +1,3 @@
-
-
 # '''
 # Basic hash table key/value pair
 # '''
@@ -7,7 +5,7 @@ class Pair:
     def __init__(self, key, value):
         self.key = key
         self.value = value
-
+        self.next = None
 
 # '''
 # Basic hash table
@@ -15,16 +13,19 @@ class Pair:
 # '''
 class BasicHashTable:
     def __init__(self, capacity):
-        pass
-
+        self.capacity = capacity
+        self.size = 0
+        self.storage = [None] * capacity
 
 # '''
 # Fill this in.
 # Research and implement the djb2 hash function
 # '''
 def hash(string, max):
-    pass
-
+    hash = 5381
+    for each_character in string:
+        hash = (( hash << 5) + hash) + ord(each_character)
+    return hash % max
 
 # '''
 # Fill this in.
@@ -32,7 +33,19 @@ def hash(string, max):
 # If you are overwriting a value with a different key, print a warning.
 # '''
 def hash_table_insert(hash_table, key, value):
-    pass
+    hash_table.size += 1
+    index = hash(key, hash_table.capacity)
+    node = hash_table.storage[index]
+
+    if node is None:
+        hash_table.storage[index] = Pair(key, value)
+        return
+    prev = node
+    while node is not None:
+        prev = node
+        node = node.next
+    prev.next = Pair(key, value)
+    
 
 
 # '''
@@ -40,8 +53,31 @@ def hash_table_insert(hash_table, key, value):
 
 # If you try to remove a value that isn't there, print a warning.
 # '''
+# def hash_table_remove(hash_table, key):
+#     index = hash(key, hash_table.capacity)
+#     node = hash_table.storage[index]
+#     prev = None
+#     while node is not None and node.key != key:
+#         prev = node
+#         node = node.next
+#     if node is None:
+#         return None
+#     else:
+#         hash_table.size -= 1
+#         result = node.value
+#         if prev is None:
+#             hash_table.storage[index] = node.next
+#         else:
+#             prev.next = prev.next.next
+#         return result
+
 def hash_table_remove(hash_table, key):
-    pass
+    index = hash(key, hash_table.capacity)
+
+    if hash_table.storage[index] is None or hash_table.storage[index].key != key:
+        print(f'value for {key} does not exist')
+    else:
+        hash_table.storage[index] = None
 
 
 # '''
@@ -49,8 +85,26 @@ def hash_table_remove(hash_table, key):
 
 # Should return None if the key is not found.
 # '''
+# def hash_table_retrieve(hash_table, key):
+#     index = hash(key, hash_table.capacity)
+#     node = hash_table.storage[index]
+
+#     while node is not None and node.key != key:
+#         node = node.next
+#     if node is None:
+#         return None
+#     else:
+#         return node.value
+
 def hash_table_retrieve(hash_table, key):
-    pass
+    index = hash(key, hash_table.capacity)
+    if hash_table.storage[index] is not None:
+        if hash_table.storage[index].key == key:
+            return hash_table.storage[index].value
+    print(f'value with this {key} does not exist')
+    return None
+        
+    
 
 
 def Testing():
