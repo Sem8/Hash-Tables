@@ -97,16 +97,18 @@ def hash_table_remove(hash_table, key):
 # Should return None if the key is not found.
 # '''
 def hash_table_retrieve(hash_table, key):
+    value = None
     index = hash(key, hash_table.capacity)
     node = hash_table.storage[index]
-    
-    while node is not None and node.key != key:        
-        node = node.next
+    iterating = True
+    while iterating and node is not None:
+        if node.key == key:
+            iterating = False
+            value = node.value
+        else:
+            node = node.next
+    return value
 
-    if node is None:
-        return None
-    else:        
-        return node.value
     # we no longer want to overwrite
     # get index
     # if hash_table.storage[index] == None, nothing to retrieve
@@ -118,7 +120,10 @@ def hash_table_retrieve(hash_table, key):
 # Fill this in
 # '''
 def hash_table_resize(hash_table):
-    pass
+    double_size = [ None ] * hash_table.capacity
+    hash_table.storage = [*hash_table.storage, *double_size]
+    hash_table.capacity = 2 * hash_table.capacity
+    return hash_table
 
 
 def Testing():
@@ -133,11 +138,11 @@ def Testing():
     print(hash_table_retrieve(ht, "line_3"))
 
     old_capacity = len(ht.storage)
-    # ht = hash_table_resize(ht)
-    # new_capacity = len(ht.storage)
+    ht = hash_table_resize(ht)
+    new_capacity = len(ht.storage)
 
-    # print("Resized hash table from " + str(old_capacity)
-    #       + " to " + str(new_capacity) + ".")
+    print("Resized hash table from " + str(old_capacity)
+          + " to " + str(new_capacity) + ".")
 
 
 Testing()
